@@ -1,31 +1,59 @@
 document.addEventListener('DOMContentLoaded', startGame)
 
-// Define your `board` object here!
 var board = {
-  cells: [
-    {
-      row: 0,
-      col: 0,
-      isMine: false,
-      hidden: true
-    }, {
-      row: 0,
-      col: 1,
-      isMine: true,
-      hidden: true
-    }, {
-      row: 1,
-      col: 0,
-      isMine: false,
-      hidden: true
-    }, {
-      row: 1,
-      col: 1,
-      isMine: false,
-      hidden: true
-    }
-  ]
+  cells: []
 };
+
+function Board(row, col, isMine, isMarked, hidden) {
+  this.row = row,
+  this.col = col,
+  this.isMine = isMine,
+  this.isMarked = isMarked,
+  this.hidden = hidden
+};
+
+function createBoard(size) {
+  var randomBoolean;
+  var count = 0;
+  // create a loop with length of size
+  for (var i=0; i<size; i++) {
+    randomBoolean = Math.random() <= 0.2;
+    for (var j=0; j<size; j++) {
+      board.cells[count] = new Board(i, j, randomBoolean, false, true);
+      count++;
+    }
+  }
+};
+
+createBoard(3); // Create board with size parameter
+
+console.log(board);
+// Define your `board` object here!
+// var board = {
+//   cells: [
+//     {
+//       row: 0,
+//       col: 0,
+//       isMine: false,
+//       hidden: true
+//     }, {
+//       row: 0,
+//       col: 1,
+//       isMine: true,
+//       hidden: true
+//     }, {
+//       row: 1,
+//       col: 0,
+//       isMine: false,
+//       hidden: true
+//     }, {
+//       row: 1,
+//       col: 1,
+//       isMine: true,
+//       hidden: true
+//     }
+//   ]
+// };
 
 function startGame () {
   // Don't remove this function call: it makes the game work!
