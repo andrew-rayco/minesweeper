@@ -15,6 +15,7 @@ function Board(row, col, isMine, isMarked, hidden) {
 function createBoard(size) {
   var randomBoolean;
   var count = 0;
+  var mineCheck = 0;
   // create a loop with length of size
   for (var i=0; i<size; i++) {
     for (var j=0; j<size; j++) {
@@ -23,37 +24,17 @@ function createBoard(size) {
       count++;
     }
   }
+  for (var i=0; i<board.cells.length; i++) {
+    if (board.cells[i].isMine == false) {
+      mineCheck++
+    }
+  }
+  if (mineCheck === board.cells.length) {
+    createBoard(size);
+  }
 };
 
-createBoard(6); // Create board with size parameter
-
-console.log(board);
-// Define your `board` object here!
-// var board = {
-//   cells: [
-//     {
-//       row: 0,
-//       col: 0,
-//       isMine: false,
-//       hidden: true
-//     }, {
-//       row: 0,
-//       col: 1,
-//       isMine: true,
-//       hidden: true
-//     }, {
-//       row: 1,
-//       col: 0,
-//       isMine: false,
-//       hidden: true
-//     }, {
-//       row: 1,
-//       col: 1,
-//       isMine: true,
-//       hidden: true
-//     }
-//   ]
-// };
+createBoard(2); // Create board with size parameter
 
 function startGame () {
   // Don't remove this function call: it makes the game work!
@@ -80,8 +61,45 @@ function checkForWin () {
   }
   if (tally == board.cells.length) {
     lib.displayMessage('You win!');
+    playAgain();
   }
 }
+
+function playAgain () {
+
+}
+
+// Just outside the playAgain function for build.
+var again = document.getElementById('notes');
+againContent = '<a href="#" id="yes">Restart</a>';
+again.innerHTML = againContent;
+
+
+var yes = document.getElementById('yes');
+var no = document.getElementById('no');
+
+
+function restart () {
+  board = {
+    cells: []
+  };
+  var boardHolder = document.getElementsByClassName('board')
+  boardHolder[0].innerHTML = "";
+  console.log(boardHolder[0])
+  console.log('restart');
+  createBoard(2);
+  startGame();
+
+}
+
+yes.addEventListener('click', restart);
+no.addEventListener('click', goodbye);
+
+
+
+
+
+
   // You can use this function call to declare a winner (once you've
   // detected that they've won, that is!)
 
