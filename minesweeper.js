@@ -12,6 +12,7 @@ function Board(row, col, isMine, isMarked, hidden) {
   this.hidden = hidden
 };
 
+
 function createBoard(size) {
   var randomBoolean;
   var count = 0;
@@ -33,8 +34,8 @@ function createBoard(size) {
     createBoard(size);
   }
 };
-
 createBoard(2); // Create board with size parameter
+
 
 function startGame () {
   // Don't remove this function call: it makes the game work!
@@ -47,6 +48,7 @@ function startGame () {
   cellClick.addEventListener('contextmenu', checkForWin);
   lib.initBoard()
 }
+
 
 // Define this function to look for a win condition:
 //
@@ -64,17 +66,46 @@ function checkForWin () {
   }
 }
 
+function sizeCounter (val) {
+  sizeSliderValue = val;
+}
 
-// Just outside the playAgain function for build.
-var again = document.getElementById('notes');
-again.innerHTML = '<a href="#" id="yes">Restart</a>';;
+function restartButton () {
 
 
-var yes = document.getElementById('yes');
-yes.addEventListener('click', restart);
+
+  // find the div with id of 'notes'
+  var again = document.getElementById('notes');
+  // build the html string with restart link and input slider
+  var againText = '<a href="#" id="restart">Restart</a>';
+  againText += '<input id="size-slider" type="range" min="2" max="6" onmousemove="sizeCounter(value)" />';
+  // show the string (necessary to build the input so we can then access the value. Otherwise get null)
+  again.innerHTML = againText;
+
+
+
+  // get slider value and add it to the string
+  // var sizeSliderValue = document.getElementById('size-slider').value;
+  againText += '<p>' + sizeSliderValue + '</p>';
+  // show the string again. this time with the count
+  again.innerHTML = againText;
+  console.log(sizeSliderValue);
+
+  // click event on restart link
+  var restartLink = document.getElementById('restart');
+  restartLink.addEventListener('click', restart);
+
+  // mouseup event on size slider to detect and update size.
+  var sliderClick = document.getElementById('size-slider');
+  sliderClick.addEventListener('click', function () {
+    again.innerHTML = againText;
+    console.log(sizeSliderValue);
+  } )
+}
+restartButton();
+
 
 function restart () {
-
   var boardHolder = document.getElementsByClassName('board')
   boardHolder[0].innerHTML = "";
   createBoard(3);
@@ -82,24 +113,6 @@ function restart () {
 }
 
 
-
-
-
-
-
-
-  // You can use this function call to declare a winner (once you've
-  // detected that they've won, that is!)
-
-
-// Define this function to count the number of mines around the cell
-// (there could be as many as 8). You don't have to get the surrounding
-// cells yourself! Just use `lib.getSurroundingCells`:
-//
-//   var surrounding = lib.getSurroundingCells(cell.row, cell.col)
-//
-// It will return cell objects in an array. You should loop through
-// them, counting the number of times `cell.isMine` is true.
 function countSurroundingMines (cell) {
   var count = 0;
   var surroundingCells = lib.getSurroundingCells(cell.row, cell.col);
