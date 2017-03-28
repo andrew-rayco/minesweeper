@@ -61,39 +61,27 @@ function checkForWin () {
   }
   if (tally == board.cells.length) {
     lib.displayMessage('You win!');
-    playAgain();
   }
 }
 
-function playAgain () {
-
-}
 
 // Just outside the playAgain function for build.
 var again = document.getElementById('notes');
-againContent = '<a href="#" id="yes">Restart</a>';
-again.innerHTML = againContent;
+again.innerHTML = '<a href="#" id="yes">Restart</a>';;
 
 
 var yes = document.getElementById('yes');
-var no = document.getElementById('no');
-
+yes.addEventListener('click', restart);
 
 function restart () {
-  board = {
-    cells: []
-  };
+
   var boardHolder = document.getElementsByClassName('board')
   boardHolder[0].innerHTML = "";
-  console.log(boardHolder[0])
-  console.log('restart');
-  createBoard(2);
+  createBoard(3);
   startGame();
-
 }
 
-yes.addEventListener('click', restart);
-no.addEventListener('click', goodbye);
+
 
 
 
