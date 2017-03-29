@@ -20,7 +20,7 @@ function createBoard(size) {
   // create a loop with length of size
   for (var i=0; i<size; i++) {
     for (var j=0; j<size; j++) {
-      randomBoolean = Math.random() <= 0.2;
+      randomBoolean = Math.random() <= 0.2; // randomly create Boolean
       board.cells[count] = new Board(i, j, randomBoolean, false, true);
       count++;
     }
@@ -50,11 +50,29 @@ function startGame () {
 }
 
 
+
 // Define this function to look for a win condition:
 //
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
-function checkForWin () {
+function checkForWin (evt) {
+  // get sounds from html
+  var audio = document.getElementById('switch');
+  var boom = document.getElementById('boom');
+  var mark = document.getElementById('mark');
+  var win = document.getElementById('win');
+
+  // Check type of cell and play appropriate sound
+  console.log(evt.target.classList[2])
+  if (evt.type == 'contextmenu') {
+    mark.play();
+  } else if (evt.target.classList[2] == 'mine') {
+    console.log(evt);
+    boom.play();
+  } else {
+    audio.play();
+  }
+
   var tally = 0;
   for (var i=0; i<board.cells.length; i++) {
     if ((board.cells[i].isMine == false && board.cells[i].hidden == false) || (board.cells[i].isMine == true && board.cells[i].isMarked == true)) {
@@ -63,53 +81,32 @@ function checkForWin () {
   }
   if (tally == board.cells.length) {
     lib.displayMessage('You win!');
+    win.play();
   }
 }
 
-function sizeCounter (val) {
-  sizeSliderValue = val;
-}
 
 function restartButton () {
-
-
-
-  // find the div with id of 'notes'
   var again = document.getElementById('notes');
-  // build the html string with restart link and input slider
   var againText = '<a href="#" id="restart">Restart</a>';
-  againText += '<input id="size-slider" type="range" min="2" max="6" onmousemove="sizeCounter(value)" />';
-  // show the string (necessary to build the input so we can then access the value. Otherwise get null)
   again.innerHTML = againText;
-
-
-
-  // get slider value and add it to the string
-  // var sizeSliderValue = document.getElementById('size-slider').value;
-  againText += '<p>' + sizeSliderValue + '</p>';
-  // show the string again. this time with the count
-  again.innerHTML = againText;
-  console.log(sizeSliderValue);
 
   // click event on restart link
   var restartLink = document.getElementById('restart');
   restartLink.addEventListener('click', restart);
 
-  // mouseup event on size slider to detect and update size.
-  var sliderClick = document.getElementById('size-slider');
-  sliderClick.addEventListener('click', function () {
-    again.innerHTML = againText;
-    console.log(sizeSliderValue);
-  } )
 }
 restartButton();
 
 
 function restart () {
+  var restartSound = document.getElementById('restart-sound');
+  restartSound.play();
   var boardHolder = document.getElementsByClassName('board')
-  boardHolder[0].innerHTML = "";
+  boardHolder[0].innerHTML = ""; // clear board
   createBoard(3);
   startGame();
+
 }
 
 
