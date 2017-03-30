@@ -5,7 +5,7 @@ var board = {
 };
 
 
-function Board(row, col, isMine, isMarked, hidden) {
+function Cell(row, col, isMine, isMarked, hidden) {
   this.row = row,
   this.col = col,
   this.isMine = isMine,
@@ -35,7 +35,7 @@ function createBoard(size) {
   for (var i=0; i<size; i++) {
     for (var j=0; j<size; j++) {
       randomBoolean = Math.random() <= 0.2; // randomly create Boolean
-      board.cells[count] = new Board(i, j, randomBoolean, false, true);
+      board.cells[count] = new Cell(i, j, randomBoolean, false, true);
       count++;
     }
   }
@@ -59,7 +59,7 @@ function checkForWin (evt) {
     }
   }
   if (tally == board.cells.length) {
-    lib.displayMessage('You win!');
+    lib.displayMessage('You sit upon a throne of victory');
     win.play();
   }
   playSound(evt);
@@ -90,7 +90,7 @@ function restartButton () {
   var again = document.getElementById('notes');
   var againText = '<a href="#" id="restart">Play again</a>';
   var i = 2;
-  againText += '<p class="size-select">Select a size: ';
+  againText += '<p class="size-select">Choose a size ';
   while (i < 7) {
     againText += '<a href="#" id="' + i + '">' + i + '</a> ';
     i++;
@@ -107,16 +107,17 @@ function restart (evt) {
   var restartSound = document.getElementById('restart-sound');
   restartSound.play();
   var currentBoard = Math.sqrt(board.cells.length);
-  console.log(currentBoard);
+  console.log(board.cells.length);
   var boardHolder = document.getElementsByClassName('board')
   boardHolder[0].innerHTML = ""; // clear board
+  board.cells = [];
   if (evt.target.id !== 'restart') {
     createBoard(evt.target.id);
   } else {
     createBoard(currentBoard);
   }
-
-  startGame();
+  console.log
+  startGame("the new board is " + board.length);
 }
 
 

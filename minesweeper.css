@@ -8,6 +8,8 @@ body {
   align-items: center;
   justify-content: flex-center;
   flex-direction: column;
+
+  background: #313943;
 }
 
 #message, #notes {
@@ -18,10 +20,49 @@ body {
 
 #message {
   font-size: 1.5rem;
+  font-family: 'Cormorant Infant';
+  color: #fff;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 72px;
+  letter-spacing: -1px;
+  margin-bottom: 0;
+  text-align: center;
 }
 
 #notes {
   margin-top: 40px;
+	font-family: 'Lato';
+	font-size: 22px;
+	font-weight: 500;
+	line-height: 36px;
+	margin-bottom: 36px;
+	text-align: center;
+  color: #fff;
+}
+
+#notes a {
+  text-decoration: none;
+  color: #313943;
+  background: #fff;
+  padding: 0 0.2em;
+  border: 1px solid white;
+  border-radius: 3px;
+
+}
+
+#notes a:hover {
+  color: #9CAFB7;
+}
+
+.size-select a {
+  border: 1px solid white;
+
+}
+
+.size-select a:hover {
+  background-color: #FE938C;
+  color: black;
 }
 
 .board {
@@ -30,13 +71,13 @@ body {
 }
 
 .board div {
-  color: green;
+  color: #4281A4;
   font-size: 2rem;
   width: 75px;
   height: 75px;
-  border: 1px #ccc dotted;
-  border-radius: 10%;
-  background-color: white;
+  border: 0;
+  border-radius: 20%;
+  background-color: #9CAFB7;
   margin: 3px;
   display: flex;
   align-items: center;
@@ -44,21 +85,24 @@ body {
 }
 
 .board div:hover {
-  background-color: white;
+  background-color: #9CAFB7;
 }
 
 div.mine, div.mine:hover {
-  background: no-repeat center/60% url("images/bomb.svg") crimson;
+  background: no-repeat center/60% url("images/axe-vector.svg") crimson;
+  border: 0;
 }
 
 div.hidden {
-  background: #eee;
+  background: #4281A4;
+  border: 0;
 }
 
 div.hidden:hover {
-  background: #ccc;
+  background: #9CAFB7;
+  border: 0;
 }
 
 div.marked, div.marked:hover {
-  background: no-repeat center/60% url("images/mark.svg") deepskyblue;
+  background: no-repeat center/60% url("images/shield.svg") deepskyblue;
 }
