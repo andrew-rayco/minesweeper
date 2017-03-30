@@ -20,6 +20,10 @@ body {
   font-size: 1.5rem;
 }
 
+#notes {
+  margin-top: 40px;
+}
+
 .board {
   display: flex;
   flex-wrap: wrap;

@@ -4,12 +4,26 @@ var board = {
   cells: []
 };
 
+
 function Board(row, col, isMine, isMarked, hidden) {
   this.row = row,
   this.col = col,
   this.isMine = isMine,
   this.isMarked = isMarked,
   this.hidden = hidden
+};
+
+
+function startGame () {
+  // Don't remove this function call: it makes the game work!
+  for (var i=0; i<board.cells.length; i++) {
+    board.cells[i].surroundingMines = countSurroundingMines(board.cells[i]);
+  }
+
+  var cellClick = document.getElementsByClassName('board')[0];
+  cellClick.addEventListener('click', checkForWin);
+  cellClick.addEventListener('contextmenu', checkForWin);
+  lib.initBoard()
 };
 
 
@@ -37,25 +51,22 @@ function createBoard(size) {
 createBoard(2); // Create board with size parameter
 
 
-function startGame () {
-  // Don't remove this function call: it makes the game work!
+function checkForWin (evt) {
+  var tally = 0;
   for (var i=0; i<board.cells.length; i++) {
-    board.cells[i].surroundingMines = countSurroundingMines(board.cells[i]);
+    if ((board.cells[i].isMine == false && board.cells[i].hidden == false) || (board.cells[i].isMine == true && board.cells[i].isMarked == true)) {
+      tally++;
+    }
   }
-
-  var cellClick = document.getElementsByClassName('board')[0];
-  cellClick.addEventListener('click', checkForWin);
-  cellClick.addEventListener('contextmenu', checkForWin);
-  lib.initBoard()
+  if (tally == board.cells.length) {
+    lib.displayMessage('You win!');
+    win.play();
+  }
+  playSound(evt);
 }
 
 
-
-// Define this function to look for a win condition:
-//
-// 1. Are all of the cells that are NOT mines visible?
-// 2. Are all of the mines marked?
-function checkForWin (evt) {
+function playSound(evt) {
   // get sounds from html
   var audio = document.getElementById('switch');
   var boom = document.getElementById('boom');
@@ -72,41 +83,40 @@ function checkForWin (evt) {
   } else {
     audio.play();
   }
-
-  var tally = 0;
-  for (var i=0; i<board.cells.length; i++) {
-    if ((board.cells[i].isMine == false && board.cells[i].hidden == false) || (board.cells[i].isMine == true && board.cells[i].isMarked == true)) {
-      tally++;
-    }
-  }
-  if (tally == board.cells.length) {
-    lib.displayMessage('You win!');
-    win.play();
-  }
 }
 
 
 function restartButton () {
   var again = document.getElementById('notes');
-  var againText = '<a href="#" id="restart">Restart</a>';
+  var againText = '<a href="#" id="restart">Play again</a>';
+  var i = 2;
+  againText += '<p class="size-select">Select a size: ';
+  while (i < 7) {
+    againText += '<a href="#" id="' + i + '">' + i + '</a> ';
+    i++;
+  }
   again.innerHTML = againText;
 
-  // click event on restart link
-  var restartLink = document.getElementById('restart');
-  restartLink.addEventListener('click', restart);
-
+  // click event on restart or size links
+  again.addEventListener('click', restart);
 }
 restartButton();
 
 
-function restart () {
+function restart (evt) {
   var restartSound = document.getElementById('restart-sound');
   restartSound.play();
+  var currentBoard = Math.sqrt(board.cells.length);
+  console.log(currentBoard);
   var boardHolder = document.getElementsByClassName('board')
   boardHolder[0].innerHTML = ""; // clear board
-  createBoard(3);
-  startGame();
+  if (evt.target.id !== 'restart') {
+    createBoard(evt.target.id);
+  } else {
+    createBoard(currentBoard);
+  }
 
+  startGame();
 }
 
 
