@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', startGame)
 
+// Initialise board
 var board = {
   cells: []
 };
 
-
+// Cell constructor function
 function Cell(row, col, isMine, isMarked, hidden) {
   this.row = row,
   this.col = col,
@@ -26,7 +27,7 @@ function startGame () {
   lib.initBoard()
 };
 
-
+// Automagically generate random board
 function createBoard(size) {
   var randomBoolean;
   var count = 0;
@@ -34,7 +35,7 @@ function createBoard(size) {
   // create a loop with length of size
   for (var i=0; i<size; i++) {
     for (var j=0; j<size; j++) {
-      randomBoolean = Math.random() <= 0.2; // randomly create Boolean
+      randomBoolean = Math.random() <= 0.2; // randomly create Boolean for mines
       board.cells[count] = new Cell(i, j, randomBoolean, false, true);
       count++;
     }
@@ -48,7 +49,7 @@ function createBoard(size) {
     createBoard(size);
   }
 };
-createBoard(2); // Create board with size parameter
+createBoard(5); // Create board with initial size parameter
 
 
 function checkForWin (evt) {
@@ -58,6 +59,7 @@ function checkForWin (evt) {
       tally++;
     }
   }
+  // Check if all cells match win condition, if so, win
   if (tally == board.cells.length) {
     lib.displayMessage('You sit upon a throne of victory');
     win.play();
@@ -87,6 +89,7 @@ function playSound(evt) {
 
 
 function restartButton () {
+  // Find and populate div with id of notes (unnecessary in JavaScript, but I wanted to try it)
   var again = document.getElementById('notes');
   var againText = '<a href="#" id="restart">Play again</a>';
   var i = 2;
@@ -104,20 +107,23 @@ restartButton();
 
 
 function restart (evt) {
+  // Play sound on restart
   var restartSound = document.getElementById('restart-sound');
   restartSound.play();
+
+  // Identify current board size, so 'play again' button rebuilds same size
   var currentBoard = Math.sqrt(board.cells.length);
-  console.log(board.cells.length);
   var boardHolder = document.getElementsByClassName('board')
-  boardHolder[0].innerHTML = ""; // clear board
-  board.cells = [];
+  boardHolder[0].innerHTML = ""; // clear existing board
+  board.cells = []; // re-initialise cells array
+
+  // Check if starting new board of same size or new size, and start new board accordingly
   if (evt.target.id !== 'restart') {
     createBoard(evt.target.id);
   } else {
     createBoard(currentBoard);
   }
-  console.log
-  startGame("the new board is " + board.length);
+  startGame();
 }
 
 
