@@ -1,9 +1,11 @@
-document.addEventListener('DOMContentLoaded', startGame)
+document.addEventListener('DOMContentLoaded', startGame);
+
 
 // Initialise board
 var board = {
   cells: []
 };
+
 
 // Cell constructor function
 function Cell(row, col, isMine, isMarked, hidden) {
@@ -12,7 +14,7 @@ function Cell(row, col, isMine, isMarked, hidden) {
   this.isMine = isMine,
   this.isMarked = isMarked,
   this.hidden = hidden
-};
+}
 
 
 function startGame () {
@@ -24,8 +26,9 @@ function startGame () {
   var cellClick = document.getElementsByClassName('board')[0];
   cellClick.addEventListener('click', checkForWin);
   cellClick.addEventListener('contextmenu', checkForWin);
-  lib.initBoard()
-};
+  lib.initBoard();
+}
+
 
 // Automagically generate random board
 function createBoard(size) {
@@ -40,22 +43,22 @@ function createBoard(size) {
       count++;
     }
   }
-  for (var i=0; i<board.cells.length; i++) {
-    if (board.cells[i].isMine == false) {
-      mineCheck++
+  for (i=0; i<board.cells.length; i++) {
+    if (board.cells[i].isMine === false) {
+      mineCheck++;
     }
   }
   if (mineCheck === board.cells.length) {
     createBoard(size);
   }
-};
+}
 createBoard(5); // Create board with initial size parameter
 
 
 function checkForWin (evt) {
   var tally = 0;
   for (var i=0; i<board.cells.length; i++) {
-    if ((board.cells[i].isMine == false && board.cells[i].hidden == false) || (board.cells[i].isMine == true && board.cells[i].isMarked == true)) {
+    if ((board.cells[i].isMine === false && board.cells[i].hidden === false) || (board.cells[i].isMine === true && board.cells[i].isMarked === true)) {
       tally++;
     }
   }
@@ -76,11 +79,9 @@ function playSound(evt) {
   var win = document.getElementById('win');
 
   // Check type of cell and play appropriate sound
-  console.log(evt.target.classList[2])
   if (evt.type == 'contextmenu') {
     mark.play();
   } else if (evt.target.classList[2] == 'mine') {
-    console.log(evt);
     boom.play();
   } else {
     audio.play();
@@ -113,7 +114,7 @@ function restart (evt) {
 
   // Identify current board size, so 'play again' button rebuilds same size
   var currentBoard = Math.sqrt(board.cells.length);
-  var boardHolder = document.getElementsByClassName('board')
+  var boardHolder = document.getElementsByClassName('board');
   boardHolder[0].innerHTML = ""; // clear existing board
   board.cells = []; // re-initialise cells array
 
@@ -131,7 +132,7 @@ function countSurroundingMines (cell) {
   var count = 0;
   var surroundingCells = lib.getSurroundingCells(cell.row, cell.col);
   for (var i=0; i<surroundingCells.length; i++) {
-    if (surroundingCells[i].isMine == true) {
+    if (surroundingCells[i].isMine === true) {
       count++;
     }
   }
